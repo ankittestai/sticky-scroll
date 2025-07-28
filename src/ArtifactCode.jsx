@@ -30,7 +30,7 @@ const StickyScrollApp = () => {
 
   const calculateScrollDelay = () => {
     const baseDelay = 150;
-    const maxDelay = 1800;
+    const maxDelay = 2500;
     const factor = scrollCount * 0.15;
     return Math.min(maxDelay, baseDelay + Math.pow(factor, 2) * 80);
   };
