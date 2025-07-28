@@ -3,6 +3,7 @@ import React, { useState, useEffect, useRef } from 'react';
 const StickyScrollApp = () => {
   const [currentPostIndex, setCurrentPostIndex] = useState(0);
   const [scrollCount, setScrollCount] = useState(0);
+  const [showDevConsole, setShowDevConsole] = useState(false);
   const feedContainerRef = useRef(null);
   const lastScrollTimeRef = useRef(Date.now());
 
@@ -30,7 +31,7 @@ const StickyScrollApp = () => {
 
   const calculateScrollDelay = () => {
     const baseDelay = 150;
-    const maxDelay = 2500;
+    const maxDelay = 1800;
     const factor = scrollCount * 0.15;
     return Math.min(maxDelay, baseDelay + Math.pow(factor, 2) * 80);
   };
@@ -130,19 +131,28 @@ const StickyScrollApp = () => {
 
   return (
     <div className="min-h-screen bg-black text-white overflow-hidden select-none">
+      {/* Hidden Dev Toggle - Click the tiny dot in bottom left corner */}
+      <div 
+        className="fixed bottom-2 left-2 w-1 h-1 bg-gray-800 rounded-full cursor-pointer z-50 opacity-30 hover:opacity-100 transition-opacity"
+        onClick={() => setShowDevConsole(!showDevConsole)}
+        title="Toggle dev console"
+      />
+
       {/* Dev Console */}
-      <div className="fixed top-2 right-2 bg-black bg-opacity-90 text-green-400 font-mono text-xs p-2 rounded border border-gray-600 z-50 backdrop-blur min-w-40">
-        <div className="mb-1">Posts: <span className="text-yellow-400">{scrollCount}</span></div>
-        <div className="mb-1">Delay: <span className="text-yellow-400">{calculateScrollDelay()}ms</span></div>
-        <div className="mb-1">Anim: <span className="text-yellow-400">{animationDuration}ms</span></div>
-        <div>Level: <span className="text-yellow-400">{getStickyLevel()}</span></div>
-      </div>
+      {showDevConsole && (
+        <div className="fixed top-2 right-2 bg-black bg-opacity-90 text-green-400 font-mono text-xs p-2 rounded border border-gray-600 z-50 backdrop-blur min-w-40">
+          <div className="mb-1">Posts: <span className="text-yellow-400">{scrollCount}</span></div>
+          <div className="mb-1">Delay: <span className="text-yellow-400">{calculateScrollDelay()}ms</span></div>
+          <div className="mb-1">Anim: <span className="text-yellow-400">{animationDuration}ms</span></div>
+          <div>Level: <span className="text-yellow-400">{getStickyLevel()}</span></div>
+        </div>
+      )}
 
       {/* Main App Container */}
       <div className="relative h-screen w-screen overflow-hidden flex justify-center items-center">
         <div 
           ref={feedContainerRef}
-          className="relative w-96 h-screen transition-transform ease-out"
+          className="relative w-full max-w-md h-screen transition-transform ease-out md:w-96"
           style={{
             transform: `translateY(${currentPostIndex * -100}vh)`,
             transitionDuration: `${animationDuration}ms`,
@@ -180,30 +190,30 @@ const StickyScrollApp = () => {
                 </div>
 
                 {/* Right Sidebar */}
-                <div className="absolute right-3 bottom-30 flex flex-col gap-5 z-10">
-                  <div className="flex flex-col items-center gap-1.5 cursor-pointer transition-transform duration-200 active:scale-90" onClick={toggleLike}>
-                    <div className="action-icon w-11 h-11 rounded-full bg-white bg-opacity-10 backdrop-blur flex items-center justify-center text-lg transition-all duration-300 hover:bg-opacity-20 hover:scale-110 border border-white border-opacity-5">
+                <div className="absolute right-2 bottom-20 flex flex-col gap-4 z-10 md:right-3 md:bottom-30 md:gap-5">
+                  <div className="flex flex-col items-center gap-1 cursor-pointer transition-transform duration-200 active:scale-90" onClick={toggleLike}>
+                    <div className="action-icon w-12 h-12 rounded-full bg-white bg-opacity-10 backdrop-blur flex items-center justify-center text-xl transition-all duration-300 hover:bg-opacity-20 hover:scale-110 border border-white border-opacity-5 md:w-11 md:h-11 md:text-lg">
                       ❤️
                     </div>
                     <div className="text-xs text-white text-opacity-80 font-medium text-center min-w-7">{user.likes}</div>
                   </div>
                   
-                  <div className="flex flex-col items-center gap-1.5 cursor-pointer transition-transform duration-200 active:scale-90">
-                    <div className="w-11 h-11 rounded-full bg-white bg-opacity-10 backdrop-blur flex items-center justify-center text-lg transition-all duration-300 hover:bg-opacity-20 hover:scale-110 border border-white border-opacity-5">
+                  <div className="flex flex-col items-center gap-1 cursor-pointer transition-transform duration-200 active:scale-90">
+                    <div className="w-12 h-12 rounded-full bg-white bg-opacity-10 backdrop-blur flex items-center justify-center text-xl transition-all duration-300 hover:bg-opacity-20 hover:scale-110 border border-white border-opacity-5 md:w-11 md:h-11 md:text-lg">
                       💬
                     </div>
                     <div className="text-xs text-white text-opacity-80 font-medium text-center min-w-7">{user.comments}</div>
                   </div>
                   
-                  <div className="flex flex-col items-center gap-1.5 cursor-pointer transition-transform duration-200 active:scale-90">
-                    <div className="w-11 h-11 rounded-full bg-white bg-opacity-10 backdrop-blur flex items-center justify-center text-lg transition-all duration-300 hover:bg-opacity-20 hover:scale-110 border border-white border-opacity-5">
+                  <div className="flex flex-col items-center gap-1 cursor-pointer transition-transform duration-200 active:scale-90">
+                    <div className="w-12 h-12 rounded-full bg-white bg-opacity-10 backdrop-blur flex items-center justify-center text-xl transition-all duration-300 hover:bg-opacity-20 hover:scale-110 border border-white border-opacity-5 md:w-11 md:h-11 md:text-lg">
                       📤
                     </div>
                     <div className="text-xs text-white text-opacity-80 font-medium text-center min-w-7">Share</div>
                   </div>
                   
-                  <div className="flex flex-col items-center gap-1.5 cursor-pointer transition-transform duration-200 active:scale-90">
-                    <div className="w-11 h-11 rounded-full bg-white bg-opacity-10 backdrop-blur flex items-center justify-center text-lg transition-all duration-300 hover:bg-opacity-20 hover:scale-110 border border-white border-opacity-5">
+                  <div className="flex flex-col items-center gap-1 cursor-pointer transition-transform duration-200 active:scale-90">
+                    <div className="w-12 h-12 rounded-full bg-white bg-opacity-10 backdrop-blur flex items-center justify-center text-xl transition-all duration-300 hover:bg-opacity-20 hover:scale-110 border border-white border-opacity-5 md:w-11 md:h-11 md:text-lg">
                       🔖
                     </div>
                     <div className="text-xs text-white text-opacity-80 font-medium text-center min-w-7"></div>
@@ -211,17 +221,17 @@ const StickyScrollApp = () => {
                 </div>
 
                 {/* User Info */}
-                <div className="absolute bottom-5 left-4 right-16 z-10">
-                  <div className="flex items-center gap-2.5 mb-2">
-                    <div className="w-8 h-8 rounded-full bg-gradient-to-r from-red-400 to-teal-400 flex items-center justify-center font-bold text-sm text-white border-2 border-white">
+                <div className="absolute bottom-4 left-4 right-14 z-10 md:bottom-5 md:right-16">
+                  <div className="flex items-center gap-2 mb-2 md:gap-2.5">
+                    <div className="w-9 h-9 rounded-full bg-gradient-to-r from-red-400 to-teal-400 flex items-center justify-center font-bold text-sm text-white border-2 border-white md:w-8 md:h-8">
                       {user.avatar}
                     </div>
-                    <div className="font-semibold text-sm text-white">@{user.name}</div>
+                    <div className="font-semibold text-sm text-white md:text-sm">@{user.name}</div>
                     <button className="bg-transparent border border-white text-white px-3 py-1 rounded text-xs font-semibold cursor-pointer transition-all duration-300 hover:bg-white hover:text-black">
                       Follow
                     </button>
                   </div>
-                  <div className="text-sm leading-tight text-white max-w-60">
+                  <div className="text-sm leading-tight text-white max-w-72 md:max-w-60">
                     {caption.split('#').map((part, index) => (
                       <span key={index}>
                         {index === 0 ? part : <span className="text-teal-400 font-medium">#{part}</span>}
@@ -242,7 +252,7 @@ const StickyScrollApp = () => {
           border-color: #ff3b5c !important;
         }
         
-        @media (max-width: 480px) {
+        @media (max-width: 768px) {
           .feed-container {
             width: 100vw !important;
           }
