@@ -131,12 +131,14 @@ const StickyScrollApp = () => {
 
   return (
     <div className="min-h-screen bg-black text-white overflow-hidden select-none">
-      {/* Hidden Dev Toggle - Click the tiny dot in bottom left corner */}
+      {/* Dev Toggle - More prominent */}
       <div 
-        className="fixed bottom-2 left-2 w-1 h-1 bg-gray-800 rounded-full cursor-pointer z-50 opacity-30 hover:opacity-100 transition-opacity"
+        className="fixed bottom-4 left-4 w-8 h-8 bg-gray-700 bg-opacity-50 rounded-full cursor-pointer z-50 flex items-center justify-center text-xs text-gray-400 hover:bg-opacity-80 hover:text-white transition-all border border-gray-600"
         onClick={() => setShowDevConsole(!showDevConsole)}
         title="Toggle dev console"
-      />
+      >
+        🔧
+      </div>
 
       {/* Dev Console */}
       {showDevConsole && (
